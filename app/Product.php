@@ -69,6 +69,11 @@ class Product extends Model
     ];
     public $timestamps = false;
 
+    public function getPriceAttribute($value)
+    {
+        return number_format($value, 2);
+    }
+
     public function descriptions()
     {
         return $this->hasMany("App\ProductDescription", "product_id", "product_id");
