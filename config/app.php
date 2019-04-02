@@ -1,7 +1,7 @@
 <?php
 
 return [
-
+    'imagePath' => env('IMAGE_PATH', '/images/products/'),
     /*
     |--------------------------------------------------------------------------
     | Application Name
