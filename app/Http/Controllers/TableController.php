@@ -3,10 +3,17 @@
 namespace App\Http\Controllers;
 
 use App\Table;
+use App\TableLink;
 use Illuminate\Http\Request;
 
 class TableController extends Controller
 {
+    /**
+     * function to fetch all tables records from DB
+     *
+     * @param Request $request
+     * @return Response Array(tables:[...])
+     */
     public function index(Request $request)
     {
         $filter = $request->input('filter', 'all');
@@ -27,6 +34,13 @@ class TableController extends Controller
         return response()->json(compact("tables"), 200);
     }
 
+    /**
+     * function to update tables status, order_id in DB
+     *
+     * @param Request $request [method:['change_status','change_order','open_table'], ...table]
+     * @param String  $table_id
+     * @return Response  [table=>$table]
+     */
     public function update(Request $request, $table_id)
     {
 
@@ -34,7 +48,7 @@ class TableController extends Controller
 
         switch ($request->input('method', 'change_status')) {
             case 'change_status':
-                $table->status = $request->status;
+                $table->table_status = $request->table_status;
                 if ($request->status == 0) {
                     $table->current_order_id = "";
                 }
@@ -46,6 +60,12 @@ class TableController extends Controller
                 $table->save();
                 break;
 
+            case 'open_table':
+                $table->table_status = 1;
+                $dt = new \DateTime("now");
+                $tableLink = TableLink::create(["table_code" => $table_id, "link_generate_time" => $dt]);
+                $table->current_order_id = $tableLink->link_id;
+                $table->save();
             default:
                 break;
         }
