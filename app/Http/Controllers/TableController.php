@@ -9,7 +9,20 @@ class TableController extends Controller
 {
     public function index(Request $request)
     {
-        $tables = Table::all();
+        $filter = $request->input('filter', 'all');
+        switch ($filter) {
+            case 'all':
+                $tables = Table::all();
+                break;
+            case 'active':
+                $tables = Table::where('table_status', 1)->get();
+                break;
+            case 'available':
+                $tables = Table::where('table_status', 0)->get();
+                break;
+            default:
+                break;
+        }
 
         return response()->json(compact("tables"), 200);
     }
