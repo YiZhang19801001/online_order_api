@@ -66,6 +66,14 @@ class TableController extends Controller
                 $tableLink = TableLink::create(["table_code" => $table_id, "link_generate_time" => $dt]);
                 $table->current_order_id = $tableLink->link_id;
                 $table->save();
+                break;
+            case 'close_table':
+                $table->table_status = 0;
+                // $tableLink = TableLink::find($table->current_order_id);
+                // $tableLink->status = -1;
+                // $tableLink->save();
+                $table->current_order_id = null;
+                break;
             default:
                 break;
         }
