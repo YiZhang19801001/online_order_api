@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-// use App\Table;
+use App\Table;
 use Illuminate\Http\Request;
 
 class TableController extends Controller
