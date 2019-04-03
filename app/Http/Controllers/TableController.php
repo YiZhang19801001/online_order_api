@@ -14,15 +14,15 @@ class TableController extends Controller
         return response()->json(compact("tables"), 200);
     }
 
-    public function update(Request $request,$table_id)
+    public function update(Request $request, $table_id)
     {
 
         $table = Table::find($table_id);
 
-        switch ($request->input('method','change_status')) {
+        switch ($request->input('method', 'change_status')) {
             case 'change_status':
                 $table->status = $request->status;
-                if($request->status == 0){
+                if ($request->status == 0) {
                     $table->current_order_id = "";
                 }
                 $table->save();
@@ -32,12 +32,11 @@ class TableController extends Controller
                 $table->current_order_id = $request->current_order_id;
                 $table->save();
                 break;
-                
+
             default:
                 break;
         }
 
-
-        return response()->json(compact("table"),200)
+        return response()->json(compact("table"), 200);
     }
 }
