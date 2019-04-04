@@ -46,32 +46,29 @@ class TableController extends Controller
 
         $table = Table::find($table_id);
 
-        switch ($request->input('method', 'change_status')) {
-            case 'change_status':
-                $table->table_status = $request->table_status;
-                if ($request->status == 0) {
-                    $table->current_order_id = "";
-                }
-                $table->save();
-                break;
-
+        switch ($request->input('method', '')) {
             case 'change_order':
                 $table->current_order_id = $request->current_order_id;
                 $table->save();
                 break;
 
             case 'open_table':
-                $table->table_status = 1;
+                //create new table link
                 $dt = new \DateTime("now");
                 $tableLink = TableLink::create(["table_code" => $table_id, "link_generate_time" => $dt]);
+                //modify table
+                $table->table_status = 1;
                 $table->current_order_id = $tableLink->link_id;
                 $table->save();
                 break;
             case 'close_table':
+                //modify table link
+                $tableLink = TableLink::find($table->current_order_id);
+                $tableLink->status = -1;
+                $tableLink->save();
+
+                //modify table
                 $table->table_status = 0;
-                // $tableLink = TableLink::find($table->current_order_id);
-                // $tableLink->status = -1;
-                // $tableLink->save();
                 $table->current_order_id = null;
                 $table->save();
                 break;
