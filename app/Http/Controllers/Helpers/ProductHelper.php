@@ -44,6 +44,7 @@ class ProductHelper
 
             array_push($result, array(
                 'category' => $category->name,
+                'category_id' => $category->category_id,
                 'products' => $products,
             ));
         }
