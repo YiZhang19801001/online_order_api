@@ -73,6 +73,7 @@ class TableController extends Controller
                 // $tableLink->status = -1;
                 // $tableLink->save();
                 $table->current_order_id = null;
+                $table->save();
                 break;
             default:
                 break;
