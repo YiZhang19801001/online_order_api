@@ -17,11 +17,18 @@ class OrderProduct extends Model
         "name",
         "price",
         "total",
+
     ];
 
     protected $attributes = [
         "model" => 1,
         "tax" => 0,
         "reward" => 0,
+        "completed" => 1,
     ];
+
+    public function getCompletedAttribute($value)
+    {
+        return $value == 0;
+    }
 }
