@@ -6,8 +6,19 @@ use Illuminate\Database\Eloquent\Model;
 
 class TableLinkSub extends Model
 {
+
     protected $table = 'oc_table_linksub';
     public $timestamps = false;
+
+    protected $fillable = ['link_id', 'order_id', "sub_add_time"];
+
+    protected $attributes = [
+        'downloaded' => 0,
+        'sub_status' => 0,
+        'client_browser' => "",
+        'client_ip' => "",
+        "order_items_qrcode_string" => "",
+    ];
 
     /**
      * Set the keys for a save update query.
@@ -37,5 +48,10 @@ class TableLinkSub extends Model
             return $this->original[$keyName];
         }
         return $this->getAttribute($keyName);
+    }
+
+    public function orderProducts()
+    {
+        return $this->hasMany('App\OrderProduct', 'order_id', 'order_id');
     }
 }
