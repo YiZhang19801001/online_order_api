@@ -8,7 +8,7 @@ class Order extends Model
 {
     protected $table = "oc_order";
     protected $primaryKey = "order_id";
-    protected $fillable = ["total", "date_added", "date_modified"];
+    protected $fillable = ["total", "date_added", "date_modified", "user_id"];
 
     public $timestamps = false;
 

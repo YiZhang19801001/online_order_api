@@ -7,6 +7,7 @@ use App\OrderHistory;
 use App\OrderProduct;
 use App\TableLink;
 use App\TableLinkSub;
+use App\User;
 // use App\OrderTotal;
 use Illuminate\Http\Request;
 
@@ -35,8 +36,14 @@ class OrderController extends Controller
         $today = $dt->format('y-m-d H:i:s');
         $total = $this->calculateTotal($cart);
 
+        $api_token = $request->bearerToken();
+        $user = User::where('api_token', $api_token)->first();
+        if ($user === null) {
+            return response()->json(["errMessage" => "unAuthoriaze User"], 400);
+        }
+
         //* create record in oc_order
-        $order = Order::create(["total" => $total, "date_added" => $today, "date_modified" => $today]);
+        $order = Order::create(["total" => $total, "date_added" => $today, "date_modified" => $today, "user_id" => $user->user_id]);
         $order_id = $order->order_id;
 
         //* create record in oc_order_history
